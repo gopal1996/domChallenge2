@@ -51,7 +51,6 @@ GeneratePixelArt.prototype.bindEvent= function() {
   document.querySelector('.parent').addEventListener('click', function(event){
     let selectedElement = event.target.dataset['val']
     if(selectedElement !== undefined) {
-      console.log(selectedElement)
       if(selectedElement.slice(0,1) === "#") {
         activeColor = selectedElement;
       } else {
@@ -71,17 +70,29 @@ GeneratePixelArt.prototype.getRandomColor= function() {
 }
 
 GeneratePixelArt.prototype.dragPixel= function() { 
-  document.querySelector('.parent').addEventListener('mouseover', function(event){
-    let selectedElement = event.target.dataset['val']
+
+let element = document.querySelector('.parent');
+let mouseClicked = false;
+element.addEventListener('mousedown', function(event){
+  mouseClicked = true;
+})
+
+element.addEventListener('mousemove', function(event) {
+  if(mouseClicked) {
+       let selectedElement = event.target.dataset['val']
     if(selectedElement !== undefined) {
-      console.log(selectedElement)
       if(selectedElement.slice(0,1) === "#") {
         activeColor = selectedElement;
       } else {
         document.querySelector(`[data-val='${selectedElement}']`).style.backgroundColor = `${activeColor}`;
       }
     }
-  })
+  }
+}) 
+
+element.addEventListener('mouseup', function(event){
+  mouseClicked = false;
+})
 }
 /*
 param:
@@ -90,4 +101,4 @@ col - number of col
 enableDrag - if you want drag feature pass true..By default true
 */
 
-new GeneratePixelArt(5,5,false)
+new GeneratePixelArt(5,5,true)
